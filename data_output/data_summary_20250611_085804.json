@@ -1,0 +1,111 @@
+{
+  "total_files": 12,
+  "total_size_mb": 0.0,
+  "file_types": {
+    "csv": {
+      "count": 6,
+      "total_size_mb": 0.0,
+      "files": [
+        "analytics_summary_20250611_085015.csv",
+        "customer_data_20250611_085014.csv",
+        "sales_data_20250611_085014.csv",
+        "analytics_summary_20250611_084836.csv",
+        "customer_data_20250611_084835.csv",
+        "sales_data_20250611_084835.csv"
+      ]
+    },
+    "json": {
+      "count": 6,
+      "total_size_mb": 0.0,
+      "files": [
+        "analytics_result_20250611_085015.json",
+        "customer_data_20250611_085014.json",
+        "sales_data_20250611_085014.json",
+        "analytics_result_20250611_084836.json",
+        "sales_data_20250611_084835.json",
+        "customer_data_20250611_084835.json"
+      ]
+    }
+  },
+  "data_sources": {
+    "analytics_data": {
+      "count": 4,
+      "total_size_mb": 0.0,
+      "latest_file": {
+        "filename": "analytics_summary_20250611_085015.csv",
+        "size_bytes": 223,
+        "size_mb": 0.0,
+        "created_time": "2025-06-11T08:50:15.380616",
+        "modified_time": "2025-06-11T08:50:15.380616",
+        "file_type": "csv"
+      }
+    },
+    "customer_data": {
+      "count": 4,
+      "total_size_mb": 0.0,
+      "latest_file": {
+        "filename": "customer_data_20250611_085014.json",
+        "size_bytes": 411,
+        "size_mb": 0.0,
+        "created_time": "2025-06-11T08:50:14.408517",
+        "modified_time": "2025-06-11T08:50:14.408517",
+        "file_type": "json"
+      }
+    },
+    "sales_data": {
+      "count": 4,
+      "total_size_mb": 0.0,
+      "latest_file": {
+        "filename": "sales_data_20250611_085014.csv",
+        "size_bytes": 194,
+        "size_mb": 0.0,
+        "created_time": "2025-06-11T08:50:14.384515",
+        "modified_time": "2025-06-11T08:50:14.384515",
+        "file_type": "csv"
+      }
+    }
+  },
+  "latest_files": [
+    {
+      "filename": "analytics_summary_20250611_085015.csv",
+      "size_bytes": 223,
+      "size_mb": 0.0,
+      "created_time": "2025-06-11T08:50:15.380616",
+      "modified_time": "2025-06-11T08:50:15.380616",
+      "file_type": "csv"
+    },
+    {
+      "filename": "analytics_result_20250611_085015.json",
+      "size_bytes": 1134,
+      "size_mb": 0.0,
+      "created_time": "2025-06-11T08:50:15.380616",
+      "modified_time": "2025-06-11T08:50:15.380616",
+      "file_type": "json"
+    },
+    {
+      "filename": "customer_data_20250611_085014.json",
+      "size_bytes": 411,
+      "size_mb": 0.0,
+      "created_time": "2025-06-11T08:50:14.408517",
+      "modified_time": "2025-06-11T08:50:14.408517",
+      "file_type": "json"
+    },
+    {
+      "filename": "customer_data_20250611_085014.csv",
+      "size_bytes": 207,
+      "size_mb": 0.0,
+      "created_time": "2025-06-11T08:50:14.408517",
+      "modified_time": "2025-06-11T08:50:14.408517",
+      "file_type": "csv"
+    },
+    {
+      "filename": "sales_data_20250611_085014.csv",
+      "size_bytes": 194,
+      "size_mb": 0.0,
+      "created_time": "2025-06-11T08:50:14.384515",
+      "modified_time": "2025-06-11T08:50:14.384515",
+      "file_type": "csv"
+    }
+  ],
+  "generated_at": "2025-06-11T08:58:04.880914"
+}
