@@ -20,9 +20,10 @@ first DAG tutorial: https://www.astronomer.io/docs/learn/get-started-with-airflo
 ![Picture of the ISS](https://www.esa.int/var/esa/storage/images/esa_multimedia/images/2010/02/space_station_over_earth/10293696-3-eng-GB/Space_Station_over_Earth_card_full.jpg)
 """
 
-from airflow.sdk.definitions.asset import Asset
+from airflow.datasets import Dataset
 from airflow.decorators import dag, task
 from pendulum import datetime
+from typing import List, Dict
 import requests
 
 
@@ -39,9 +40,9 @@ def example_astronauts():
     # Define tasks
     @task(
         # Define a dataset outlet for the task. This can be used to schedule downstream DAGs when this task has run.
-        outlets=[Asset("current_astronauts")]
+        outlets=[Dataset("current_astronauts")]
     )  # Define that this task updates the `current_astronauts` Dataset
-    def get_astronauts(**context) -> list[dict]:
+    def get_astronauts(**context) -> List[Dict]:
         """
         This task uses the requests library to retrieve a list of Astronauts
         currently in space. The results are pushed to XCom with a specific key
@@ -77,7 +78,7 @@ def example_astronauts():
         return list_of_people_in_space
 
     @task
-    def print_astronaut_craft(greeting: str, person_in_space: dict) -> None:
+    def print_astronaut_craft(greeting: str, person_in_space: Dict) -> None:
         """
         This task creates a print statement with the name of an
         Astronaut in space and the craft they are flying on from
