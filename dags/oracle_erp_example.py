@@ -21,6 +21,8 @@ from typing import List, Dict
 import pandas as pd
 import logging
 import os
+import json
+import csv
 
 # Default arguments for the DAG
 default_args = {
@@ -110,9 +112,24 @@ def oracle_erp_pipeline():
             
             # Convert to list of dictionaries for easier handling
             customer_data = df.to_dict('records')
-            
+
+            # Save data to local file
+            output_dir = "/opt/airflow/data_output"
+            os.makedirs(output_dir, exist_ok=True)
+
+            # Save as JSON
+            json_file = f"{output_dir}/oracle_customers_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
+            with open(json_file, 'w') as f:
+                json.dump(customer_data, f, indent=2, default=str)  # default=str for datetime serialization
+
+            # Save as CSV
+            csv_file = f"{output_dir}/oracle_customers_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv"
+            df.to_csv(csv_file, index=False)
+
             logging.info(f"Extracted {len(customer_data)} customer records")
-            
+            logging.info(f"💾 Oracle customer data saved to: {json_file}")
+            logging.info(f"💾 Oracle customer data saved to: {csv_file}")
+
             return customer_data
             
         except Exception as e:
@@ -146,9 +163,24 @@ def oracle_erp_pipeline():
             
             df = oracle_hook.get_pandas_df(sql_query)
             invoice_data = df.to_dict('records')
-            
+
+            # Save data to local file
+            output_dir = "/opt/airflow/data_output"
+            os.makedirs(output_dir, exist_ok=True)
+
+            # Save as JSON
+            json_file = f"{output_dir}/oracle_invoices_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
+            with open(json_file, 'w') as f:
+                json.dump(invoice_data, f, indent=2, default=str)
+
+            # Save as CSV
+            csv_file = f"{output_dir}/oracle_invoices_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv"
+            df.to_csv(csv_file, index=False)
+
             logging.info(f"Extracted {len(invoice_data)} invoice records")
-            
+            logging.info(f"💾 Oracle invoice data saved to: {json_file}")
+            logging.info(f"💾 Oracle invoice data saved to: {csv_file}")
+
             return invoice_data
             
         except Exception as e:

@@ -1,0 +1,23 @@
+[
+  {
+    "sale_id": 1,
+    "customer_id": 1,
+    "amount": 100.5,
+    "date": "2024-01-01",
+    "extracted_at": "2025-06-11T08:48:35.852469"
+  },
+  {
+    "sale_id": 2,
+    "customer_id": 2,
+    "amount": 250.75,
+    "date": "2024-01-02",
+    "extracted_at": "2025-06-11T08:48:35.852496"
+  },
+  {
+    "sale_id": 3,
+    "customer_id": 1,
+    "amount": 75.25,
+    "date": "2024-01-03",
+    "extracted_at": "2025-06-11T08:48:35.852500"
+  }
+]
