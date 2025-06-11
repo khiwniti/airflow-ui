@@ -1,0 +1,12 @@
+[
+  {
+    "CUSTOMER_ID": 1001,
+    "CUSTOMER_NAME": "Mock Customer 1",
+    "CUSTOMER_NUMBER": "MOCK001",
+    "CREATION_DATE": "2025-06-11T09:41:20.976852",
+    "LAST_UPDATE_DATE": "2025-06-11T09:41:20.976860",
+    "STATUS": "ACTIVE",
+    "extracted_at": "2025-06-11T09:41:20.976862",
+    "note": "Mock data due to connection error: DPY-3015: password verifier type 0x939 is not supported by python-oracledb in thin mode"
+  }
+]

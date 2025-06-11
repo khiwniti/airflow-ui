@@ -52,10 +52,10 @@ def oracle_erp_pipeline():
         Test the Oracle ERP connection and return connection status
         """
         try:
-            # Create Oracle connection using environment variables
+            # Create Oracle connection using thin mode (no client libraries needed)
             oracle_hook = OracleHook(
                 oracle_conn_id='oracle_erp_dev',
-                thick_mode=True  # Use thick mode for compatibility
+                thick_mode=False  # Use thin mode - no Oracle client libraries required
             )
             
             # Test connection with a simple query
@@ -90,25 +90,52 @@ def oracle_erp_pipeline():
         Sample query for AR_CUSTOMERS table
         """
         try:
-            oracle_hook = OracleHook(oracle_conn_id='oracle_erp_dev')
-            
-            # Sample query - adjust based on your ERP schema and requirements
-            sql_query = """
-            SELECT 
-                CUSTOMER_ID,
-                CUSTOMER_NAME,
-                CUSTOMER_NUMBER,
-                CREATION_DATE,
-                LAST_UPDATE_DATE,
-                STATUS
-            FROM AR_CUSTOMERS 
-            WHERE ROWNUM <= 100
-            AND CREATION_DATE >= SYSDATE - 30
-            ORDER BY CREATION_DATE DESC
-            """
-            
-            # Execute query and fetch results
-            df = oracle_hook.get_pandas_df(sql_query)
+            # Try different connection methods to handle password verifier issues
+            connection_methods = [
+                {'thick_mode': False, 'name': 'Thin Mode (No Client Required)'},
+            ]
+
+            oracle_hook = None
+            df = None
+
+            for method in connection_methods:
+                try:
+                    logging.info(f"🔄 Attempting customer data extraction with {method['name']}...")
+                    oracle_hook = OracleHook(
+                        oracle_conn_id='oracle_erp_dev',
+                        thick_mode=method['thick_mode']
+                    )
+
+                    # Sample query - adjust based on your ERP schema and requirements
+                    sql_query = """
+                    SELECT
+                        CUSTOMER_ID,
+                        CUSTOMER_NAME,
+                        CUSTOMER_NUMBER,
+                        CREATION_DATE,
+                        LAST_UPDATE_DATE,
+                        STATUS
+                    FROM AR_CUSTOMERS
+                    WHERE ROWNUM <= 100
+                    AND CREATION_DATE >= SYSDATE - 30
+                    ORDER BY CREATION_DATE DESC
+                    """
+
+                    # Execute query and fetch results
+                    df = oracle_hook.get_pandas_df(sql_query)
+                    logging.info(f"✅ Successfully connected with {method['name']}")
+                    break
+
+                except Exception as e:
+                    logging.warning(f"❌ {method['name']} failed: {str(e)}")
+                    if "password verifier" in str(e).lower():
+                        logging.info("🔄 Password verifier issue detected, trying next method...")
+                        continue
+                    else:
+                        raise e
+
+            if df is None:
+                raise Exception("All connection methods failed")
             
             # Convert to list of dictionaries for easier handling
             customer_data = df.to_dict('records')
@@ -143,25 +170,52 @@ def oracle_erp_pipeline():
         Sample query for AR_INVOICES tables
         """
         try:
-            oracle_hook = OracleHook(oracle_conn_id='oracle_erp_dev')
-            
-            # Sample query - adjust based on your ERP schema
-            sql_query = """
-            SELECT 
-                INVOICE_ID,
-                INVOICE_NUMBER,
-                CUSTOMER_ID,
-                INVOICE_DATE,
-                TOTAL_AMOUNT,
-                CURRENCY_CODE,
-                STATUS
-            FROM AR_INVOICES_ALL 
-            WHERE ROWNUM <= 100
-            AND INVOICE_DATE >= SYSDATE - 7
-            ORDER BY INVOICE_DATE DESC
-            """
-            
-            df = oracle_hook.get_pandas_df(sql_query)
+            # Try different connection methods to handle password verifier issues
+            connection_methods = [
+                {'thick_mode': False, 'name': 'Thin Mode (No Client Required)'},
+            ]
+
+            oracle_hook = None
+            df = None
+
+            for method in connection_methods:
+                try:
+                    logging.info(f"🔄 Attempting invoice data extraction with {method['name']}...")
+                    oracle_hook = OracleHook(
+                        oracle_conn_id='oracle_erp_dev',
+                        thick_mode=method['thick_mode']
+                    )
+
+                    # Sample query - adjust based on your ERP schema
+                    sql_query = """
+                    SELECT
+                        INVOICE_ID,
+                        INVOICE_NUMBER,
+                        CUSTOMER_ID,
+                        INVOICE_DATE,
+                        TOTAL_AMOUNT,
+                        CURRENCY_CODE,
+                        STATUS
+                    FROM AR_INVOICES_ALL
+                    WHERE ROWNUM <= 100
+                    AND INVOICE_DATE >= SYSDATE - 7
+                    ORDER BY INVOICE_DATE DESC
+                    """
+
+                    df = oracle_hook.get_pandas_df(sql_query)
+                    logging.info(f"✅ Successfully connected with {method['name']}")
+                    break
+
+                except Exception as e:
+                    logging.warning(f"❌ {method['name']} failed: {str(e)}")
+                    if "password verifier" in str(e).lower():
+                        logging.info("🔄 Password verifier issue detected, trying next method...")
+                        continue
+                    else:
+                        raise e
+
+            if df is None:
+                raise Exception("All connection methods failed")
             invoice_data = df.to_dict('records')
 
             # Save data to local file
