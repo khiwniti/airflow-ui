@@ -53,7 +53,7 @@ def oracle_erp_pipeline():
             # Create Oracle connection using environment variables
             oracle_hook = OracleHook(
                 oracle_conn_id='oracle_erp_dev',
-                thick_mode=False  # Use thin mode for easier deployment
+                thick_mode=True  # Use thick mode for compatibility
             )
             
             # Test connection with a simple query
