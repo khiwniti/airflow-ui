@@ -1,45 +1,178 @@
-Overview
-========
+# Airflow Analytics Project
 
-Welcome to Astronomer! This project was generated after you ran 'astro dev init' using the Astronomer CLI. This readme describes the contents of the project, as well as how to run Apache Airflow on your local machine.
+A modern Apache Airflow deployment using GitHub for CI/CD and containerized deployment.
 
-Project Contents
-================
+## 🚀 Quick Start
 
-Your Astro project contains the following files and folders:
+### Option 1: GitHub Codespaces (Recommended)
+1. Click the "Code" button on GitHub
+2. Select "Create codespace on main"
+3. Wait for the environment to load
+4. Airflow will be automatically available at the forwarded port
 
-- dags: This folder contains the Python files for your Airflow DAGs. By default, this directory includes one example DAG:
-    - `example_astronauts`: This DAG shows a simple ETL pipeline example that queries the list of astronauts currently in space from the Open Notify API and prints a statement for each astronaut. The DAG uses the TaskFlow API to define tasks in Python, and dynamic task mapping to dynamically print a statement for each astronaut. For more on how this DAG works, see our [Getting started tutorial](https://www.astronomer.io/docs/learn/get-started-with-airflow).
-- Dockerfile: This file contains a versioned Astro Runtime Docker image that provides a differentiated Airflow experience. If you want to execute other commands or overrides at runtime, specify them here.
-- include: This folder contains any additional files that you want to include as part of your project. It is empty by default.
-- packages.txt: Install OS-level packages needed for your project by adding them to this file. It is empty by default.
-- requirements.txt: Install Python packages needed for your project by adding them to this file. It is empty by default.
-- plugins: Add custom or community plugins for your project to this file. It is empty by default.
-- airflow_settings.yaml: Use this local-only file to specify Airflow Connections, Variables, and Pools instead of entering them in the Airflow UI as you develop DAGs in this project.
+### Option 2: Local Development
 
-Deploy Your Project Locally
-===========================
+#### Prerequisites
+- Docker Desktop
+- Git
 
-Start Airflow on your local machine by running 'astro dev start'.
+#### Windows (PowerShell)
+```powershell
+# Clone the repository
+git clone https://github.com/khiwniti/airflow-ui.git
+cd airflow-ui
 
-This command will spin up five Docker containers on your machine, each for a different Airflow component:
+# Run deployment script
+.\scripts\deploy.ps1
+```
 
-- Postgres: Airflow's Metadata Database
-- Scheduler: The Airflow component responsible for monitoring and triggering tasks
-- DAG Processor: The Airflow component responsible for parsing DAGs
-- API Server: The Airflow component responsible for serving the Airflow UI and API
-- Triggerer: The Airflow component responsible for triggering deferred tasks
+#### Linux/Mac (Bash)
+```bash
+# Clone the repository
+git clone https://github.com/khiwniti/airflow-ui.git
+cd airflow-ui
 
-When all five containers are ready the command will open the browser to the Airflow UI at http://localhost:8080/. You should also be able to access your Postgres Database at 'localhost:5432/postgres' with username 'postgres' and password 'postgres'.
+# Make script executable and run
+chmod +x scripts/deploy.sh
+./scripts/deploy.sh
+```
 
-Note: If you already have either of the above ports allocated, you can either [stop your existing Docker containers or change the port](https://www.astronomer.io/docs/astro/cli/troubleshoot-locally#ports-are-not-available-for-my-local-airflow-webserver).
+#### Manual Docker Compose
+```bash
+# Create directories
+mkdir -p logs plugins config
 
-Deploy Your Project to Astronomer
-=================================
+# Start services
+docker-compose up -d
 
-If you have an Astronomer account, pushing code to a Deployment on Astronomer is simple. For deploying instructions, refer to Astronomer documentation: https://www.astronomer.io/docs/astro/deploy-code/
+# Initialize database (first time only)
+docker-compose up airflow-init
+```
 
-Contact
-=======
+## 📊 Access Airflow
 
-The Astronomer CLI is maintained with love by the Astronomer team. To report a bug or suggest a change, reach out to our support.
+- **Web UI**: http://localhost:8080
+- **Username**: admin
+- **Password**: admin123
+- **Database**: localhost:5433 (PostgreSQL)
+
+## 🛠️ Management Commands
+
+### Windows PowerShell
+```powershell
+# View logs
+.\scripts\deploy.ps1 -Logs
+
+# Stop services
+.\scripts\deploy.ps1 -Stop
+
+# Restart services
+.\scripts\deploy.ps1 -Restart
+```
+
+### Linux/Mac
+```bash
+# View logs
+docker-compose logs -f
+
+# Stop services
+docker-compose down
+
+# Restart services
+docker-compose restart
+```
+
+## 📁 Project Structure
+
+```
+├── dags/                   # Airflow DAGs
+├── plugins/               # Custom plugins
+├── include/               # Additional files
+├── tests/                 # DAG tests
+├── scripts/               # Deployment scripts
+├── .github/workflows/     # CI/CD pipelines
+├── .devcontainer/         # Codespaces config
+├── docker-compose.yml     # Local deployment
+├── Dockerfile            # Custom Airflow image
+└── requirements.txt      # Python dependencies
+```
+
+## 🔄 CI/CD Pipeline
+
+The project includes automated GitHub Actions workflows:
+
+- **Testing**: Runs DAG validation and tests on every PR
+- **Building**: Creates Docker images and pushes to GitHub Container Registry
+- **Deployment**: Automated deployment notifications
+
+## 🌐 Deployment Options
+
+### 1. GitHub Codespaces
+- Zero setup required
+- Automatic port forwarding
+- Integrated VS Code environment
+
+### 2. Local Docker
+- Full control over environment
+- Suitable for development
+- Uses docker-compose for orchestration
+
+### 3. Cloud Deployment
+- GitHub Container Registry images
+- Ready for Kubernetes deployment
+- Scalable production setup
+
+## 🧪 Testing
+
+```bash
+# Run DAG tests
+python -m pytest tests/ -v
+
+# Validate DAGs
+python -c "from airflow.models import DagBag; db = DagBag(); print('DAGs loaded successfully' if not db.import_errors else db.import_errors)"
+```
+
+## 📝 Adding New DAGs
+
+1. Create Python files in the `dags/` directory
+2. Follow Airflow DAG conventions
+3. Test locally before committing
+4. Push to GitHub for automatic deployment
+
+## 🔧 Configuration
+
+- **Environment variables**: `.env` file
+- **Airflow settings**: `airflow_settings.yaml`
+- **Python packages**: `requirements.txt`
+- **System packages**: `packages.txt`
+
+## 🆘 Troubleshooting
+
+### Port Conflicts
+If port 5432 is in use:
+```bash
+# Check what's using the port
+netstat -ano | findstr :5432
+
+# Stop PostgreSQL service (Windows)
+Stop-Service postgresql*
+```
+
+### Container Issues
+```bash
+# Check container status
+docker-compose ps
+
+# View specific service logs
+docker-compose logs airflow-webserver
+
+# Restart specific service
+docker-compose restart airflow-scheduler
+```
+
+## 📞 Support
+
+For issues and questions:
+- Create an issue on GitHub
+- Check the troubleshooting section
+- Review Airflow documentation
