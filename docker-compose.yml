@@ -13,6 +13,12 @@ x-airflow-common:
     AIRFLOW__SCHEDULER__ENABLE_HEALTH_CHECK: 'true'
     AIRFLOW__WEBSERVER__EXPOSE_CONFIG: 'true'
     _PIP_ADDITIONAL_REQUIREMENTS: ${_PIP_ADDITIONAL_REQUIREMENTS:-}
+    # Oracle ERP Connection Environment Variables
+    ORACLE_ERP_HOST: ${ORACLE_ERP_HOST:-176.16.30.133}
+    ORACLE_ERP_PORT: ${ORACLE_ERP_PORT:-1554}
+    ORACLE_ERP_SID: ${ORACLE_ERP_SID:-EBSDEV}
+    ORACLE_ERP_USERNAME: ${ORACLE_ERP_USERNAME:-apps}
+    ORACLE_ERP_PASSWORD: ${ORACLE_ERP_PASSWORD:-appsdev}
   volumes:
     - ${AIRFLOW_PROJ_DIR:-.}/dags:/opt/airflow/dags
     - ${AIRFLOW_PROJ_DIR:-.}/logs:/opt/airflow/logs
