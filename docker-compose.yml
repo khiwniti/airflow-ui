@@ -12,7 +12,7 @@ x-airflow-common:
     AIRFLOW__API__AUTH_BACKENDS: 'airflow.api.auth.backend.basic_auth,airflow.api.auth.backend.session'
     AIRFLOW__SCHEDULER__ENABLE_HEALTH_CHECK: 'true'
     AIRFLOW__WEBSERVER__EXPOSE_CONFIG: 'true'
-    _PIP_ADDITIONAL_REQUIREMENTS: ${_PIP_ADDITIONAL_REQUIREMENTS:-}
+    _PIP_ADDITIONAL_REQUIREMENTS: ${_PIP_ADDITIONAL_REQUIREMENTS:-apache-airflow-providers-oracle==3.10.1 cx_Oracle==8.3.0 oracledb==1.4.2 pandas==2.0.3 sqlalchemy==1.4.53}
     # Oracle ERP Connection Environment Variables
     ORACLE_ERP_HOST: ${ORACLE_ERP_HOST:-176.16.30.133}
     ORACLE_ERP_PORT: ${ORACLE_ERP_PORT:-1554}
