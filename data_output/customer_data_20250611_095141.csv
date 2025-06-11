@@ -1,0 +1,4 @@
+customer_id,name,email,created_at
+1,John Doe,john@example.com,2025-06-11T09:51:41.865828
+2,Jane Smith,jane@example.com,2025-06-11T09:51:41.865844
+3,Bob Johnson,bob@example.com,2025-06-11T09:51:41.865846
